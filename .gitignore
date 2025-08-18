@@ -2,3 +2,12 @@
 /venv/
 .venv
 /src/extensions/migrations/
+
+# Python
+__pycache__/
+*.pyc
+
+# Models & artifacts
+*.joblib
+src/modules/prediction/models_saved/
+src/modules/prediction/models_archived/
