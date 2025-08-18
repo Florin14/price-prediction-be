@@ -15,7 +15,7 @@ from ..utils import prepare_input_for_prediction
 
 BASEDIR = os.path.dirname(__file__)
 MODEL_DIR = os.path.join(BASEDIR, "..", "models_saved")
-MODEL_PATH = os.path.join(MODEL_DIR, "price_model_best.joblib")
+MODEL_PATH = os.path.join(MODEL_DIR, "price_model_best1.joblib")
 # ───────────────────────────────────────────────────────────────────────────────
 # 1) Încărcăm modelul antrenat O SINGURĂ DATĂ la importul modulului predict.py
 # ───────────────────────────────────────────────────────────────────────────────
