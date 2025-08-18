@@ -43,7 +43,7 @@
 # TEST_SIZE = 0.2
 # RANDOM_STATE = 42
 # N_ITER = 50
-# CV_FOLDS = 5
+# CV_FOLDS = 3
 #
 # POI_TYPES = {
 #     "bus_stop": {"amenity": "bus_station"},
@@ -195,41 +195,30 @@
 # X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=TEST_SIZE, random_state=RANDOM_STATE)
 # print("Training RF…")
 # search_rf.fit(X_tr, y_tr)
-# print("Training HGB…")
-# search_hgb.fit(X_tr, y_tr)
+#
 #
 # # ─── 9) STACKING ────────────────────────────────────────────────────────────
 # rf_best = search_rf.best_estimator_
-# hgb_best = search_hgb.best_estimator_
-# stack = StackingRegressor(
-#     estimators=[("rf", rf_best), ("hgb", hgb_best)],
-#     final_estimator=RandomForestRegressor(
-#         random_state=RANDOM_STATE, n_estimators=200
-#     ), n_jobs=-1
-# )
+# # hgb_best = search_hgb.best_estimator_
+# # stack = StackingRegressor(
+# #     estimators=[("rf", rf_best), ("hgb", hgb_best)],
+# #     final_estimator=RandomForestRegressor(
+# #         random_state=RANDOM_STATE, n_estimators=200
+# #     ), n_jobs=-1
+# # )
 # print("Training STACK…")
-# stack.fit(X_tr, y_tr)
+# # stack.fit(X_tr, y_tr)
 #
 # # ───10) EVALUARE ───────────────────────────────────────────────────────────
 # mae_rf = mean_absolute_error(y_te, rf_best.predict(X_te))
 # rmse_rf = np.sqrt(mean_squared_error(y_te, rf_best.predict(X_te)))
 # r2_rf = r2_score(y_te, rf_best.predict(X_te))
 #
-# mae_hgb = mean_absolute_error(y_te, hgb_best.predict(X_te))
-# rmse_hgb = np.sqrt(mean_squared_error(y_te, hgb_best.predict(X_te)))
-# r2_hgb = r2_score(y_te, hgb_best.predict(X_te))
-#
-# mae_s = mean_absolute_error(y_te, stack.predict(X_te))
-# rmse_s = np.sqrt(mean_squared_error(y_te, stack.predict(X_te)))
-# r2_s = r2_score(y_te, stack.predict(X_te))
-#
 # print(f"RF MAE={mae_rf:.3f} RMSE={rmse_rf:.3f} R2={r2_rf:.3f}")
-# print(f"HGB MAE={mae_hgb:.3f} RMSE={rmse_hgb:.3f} R2={r2_hgb:.3f}")
-# print(f"STK MAE={mae_s:.3f} RMSE={rmse_s:.3f} R2={r2_s:.3f}")
 #
 # # ───11) SALVARE MODEL & DB ─────────────────────────────────────────────────
-# best_name = min([("RF", mae_rf), ("HGB", mae_hgb), ("STK", mae_s)], key=lambda x: x[1])[0]
-# best_model = {"RF": rf_best, "HGB": hgb_best, "STK": stack}[best_name]
+# best_name = ("RF", mae_rf)
+# best_model = {"RF": rf_best}[best_name]
 # joblib.dump(best_model, MODEL_PATH)
 #
 # # populate performance table
@@ -239,21 +228,9 @@
 #     rmse=rmse_rf,
 #     r2=r2_rf,
 # )
-# perf2 = PerformanceCreate(
-#     model_name="HGB",
-#     mae=mae_hgb,
-#     rmse=rmse_hgb,
-#     r2=r2_hgb,
-# )
-# perf3 = PerformanceCreate(
-#     model_name="STK",
-#     mae=mae_s,
-#     rmse=rmse_s,
-#     r2=r2_s,
-# )
+#
 # create_performance(perf1)
-# create_performance(perf2)
-# create_performance(perf3)
+#
 #
 # print(f"Saved best model ({best_name}) and performance to DB")
 # print("END TRAIN:", datetime.now())
