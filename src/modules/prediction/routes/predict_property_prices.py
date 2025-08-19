@@ -19,8 +19,7 @@ if not os.path.isfile(MODEL_PATH):
     raise RuntimeError(f"Model not found: {MODEL_PATH}. Run /train first.")
 model = joblib.load(MODEL_PATH)
 
-# ─── LOAD FULL LISTINGS FOR similarity ───────────────────────────────────────
-df_all = load_listings_as_dataframe()
+
 
 
 def normalize_city(name: str) -> str:
@@ -29,12 +28,6 @@ def normalize_city(name: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
-# adăugăm o coloană normalizată o singură dată la startup
-df_all["city_norm"] = df_all["city"].fillna("").apply(normalize_city)
-
-
-# compute price_per_sqm and POI distances for df_all (similar to training)
-# TODO: reuse same POI code as above in training
 
 @router.post("-predict", response_model=PredictionResponse)
 async def make_prediction(payload: PredictionBase, db: Session = Depends(get_db)):
@@ -53,6 +46,11 @@ async def make_prediction(payload: PredictionBase, db: Session = Depends(get_db)
         accuracy = max(0.0, 100.0 * (1 - err / payload.price))
 
     city_norm_input = normalize_city(payload.city or "")
+    # ─── LOAD FULL LISTINGS FOR similarity ───────────────────────────────────────
+    df_all = load_listings_as_dataframe()
+    # adăugăm o coloană normalizată o singură dată la startup
+    df_all["city_norm"] = df_all["city"].fillna("").apply(normalize_city)
+
     df_city = df_all[df_all["city_norm"] == city_norm_input]
 
     if df_city.empty:
