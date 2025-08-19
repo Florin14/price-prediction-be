@@ -15,9 +15,7 @@ from ...listing.models.performance_schemas import HistoryCreate
 from ...listing.routes.helpers import create_history
 
 # ─── ÎNCARCĂ MODELUL ─────────────────────────────────────────────────────────
-if not os.path.isfile(MODEL_PATH):
-    raise RuntimeError(f"Model not found: {MODEL_PATH}. Run /train first.")
-model = joblib.load(MODEL_PATH)
+
 
 
 
@@ -31,6 +29,9 @@ def normalize_city(name: str) -> str:
 
 @router.post("-predict", response_model=PredictionResponse)
 async def make_prediction(payload: PredictionBase, db: Session = Depends(get_db)):
+    if not os.path.isfile(MODEL_PATH):
+        raise RuntimeError(f"Model not found: {MODEL_PATH}. Run /train first.")
+    model = joblib.load(MODEL_PATH)
     # 1) Prepare single‐row df_input
     try:
         df_input = prepare_input_for_prediction(payload.dict())
