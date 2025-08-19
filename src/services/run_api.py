@@ -41,6 +41,7 @@ if __name__ == "__main__":
             CORSMiddleware,
             allow_origins=[
                 "http://localhost:3000",
+                "https://price-prediction-fe.onrender.com"
             ],
             allow_credentials=True,
             allow_methods=["*"],
