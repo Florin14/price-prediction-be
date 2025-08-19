@@ -10,7 +10,7 @@ class PostgresConfig(BaseSettings):
     POSTGRESQL_PASSWORD: str = Field("1234", env="POSTGRESQL_PASSWORD")
 
     def uri(self):
-        return f"postgresql://postgres:1234@localhost:5432/disertation_db"
+        return f"postgresql://neondb_owner:npg_si4RJoKVFA3Q@ep-calm-voice-a2929a9b-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 
 postgresConfig = PostgresConfig()

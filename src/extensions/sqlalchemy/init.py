@@ -6,7 +6,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 import project_helpers.config as config
 from .base_model import BaseModel
 
-engine = create_engine("postgresql://postgres:1234@localhost:5432/disertation_db")
+engine = create_engine("postgresql://neondb_owner:npg_si4RJoKVFA3Q@ep-calm-voice-a2929a9b-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require")
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
